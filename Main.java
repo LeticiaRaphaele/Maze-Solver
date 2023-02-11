@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -12,8 +13,9 @@ public class Main extends Application {
     }// fim do metodo
 
     public void start(Stage palco) throws Exception {
-      Parent raiz = FXMLLoader.load(getClass().getResource("Canvas.fxml"));
-      Scene scene = new Scene(raiz);
+      MazeCreationController mcc = new MazeCreationController();
+      Pane root = new Pane(mcc.getCanvas());
+      Scene scene = new Scene(root);
       palco.setTitle("Canvas");
       palco.sizeToScene();
       palco.setScene(scene);

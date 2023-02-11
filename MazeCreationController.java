@@ -1,10 +1,21 @@
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class MazeCreationController {
+public class MazeCreationController implements Initializable {
+
+  final static int background = 0;
+  final static int walls = 1;
+  final static int pathCode = 2;
+  final static int emptyCells = 3;
+  final static int visitedCells = 4;
 
   @FXML
   private GraphicsContext gc;//graphics contex for the drawing on the canvas,
@@ -19,7 +30,9 @@ public class MazeCreationController {
   //and the walls are false, to do it there is need for a 2d array where the joining of rows and columns form 
   //the plane the maze will become.
 
-  public void start(Stage stage){
+
+
+  public void initialize(URL location, ResourceBundle resource){
     color =  new Color[]{
       Color.WHITE,//color of the background
       Color.WHITE,//color the the walls
@@ -28,8 +41,31 @@ public class MazeCreationController {
       Color.rgb(200,200,200)//color the the cells visited
     };
 
+    gc = canvas.getGraphicsContext2D();//Return the Graphic Context for the canvas
+    gc.setFill(color[background]);//set the color the canvas will be
+    gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());//set the size, the wight and the plane of the canvas
+
+    Thread runner = new Thread();
+    runner.setDaemon(true);//Daemon threads are interruped when a main thread finish executing the program(clicking in the X)
+    runner.start();
+  }
+
+  public void drawSquare(int row, int column, int colorC){
+    //fil a especific square of the grid with the color specified by the 
+    //color the code is refering, which has to be one of the static int 
+
+    Platform.runLater( () ->{
+      gc.setFill(color[colorC]);
+      int x = blockSize*column;
+      int y = blockSize*row;
+      gc.fillRect(x,y, blockSize,blockSize);
+    });
+     
   }
 
 
+  public Canvas getCanvas(){
+    return this.canvas;
+  }
 
 }
